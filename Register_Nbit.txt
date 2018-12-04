@@ -1,0 +1,40 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/27/2018 05:44:58 PM
+// Design Name: 
+// Module Name: Register_Nbit
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module Register_Nbit(clk, rst, en, DataIn, DataOut);
+    parameter N = 5;
+    input clk;
+    input rst;
+    input en;
+    input [N-1:0] DataIn;
+    output reg [N-1:0] DataOut;
+    always @ (posedge clk or  posedge rst)
+    begin: Reg_Operation
+        if(rst) begin
+            DataOut <= 5'd0;
+        end else begin
+            if(en) begin
+                DataOut <= DataIn;
+            end
+        end
+    end
+endmodule

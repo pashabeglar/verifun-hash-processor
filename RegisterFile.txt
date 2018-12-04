@@ -1,0 +1,74 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 11/25/2018 03:14:12 PM
+// Design Name: 
+// Module Name: RegisterFile
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module RegisterFile(clk,
+                    RegWrite,
+                    rd_addr1,
+                    rd_addr2,
+                    rd_addr3,
+                    wr_addr,
+                    wr_data,
+                    rd_data1,
+                    rd_data2,
+                    rd_data3);
+    
+    parameter ADDR_WD = 5;
+    parameter WORD_WD = 1 << ADDR_WD;
+    parameter FILE_DEPTH = 1 << ADDR_WD;
+    
+    input clk;
+    input RegWrite;
+    
+    input [ADDR_WD-1:0] rd_addr1;
+    input [ADDR_WD-1:0] rd_addr2;
+    input [ADDR_WD-1:0] rd_addr3;
+    
+    input [ADDR_WD-1:0] wr_addr;
+    input [WORD_WD-1:0] wr_data;
+    
+    output reg [WORD_WD-1:0] rd_data1;
+    output reg [WORD_WD-1:0] rd_data2;
+    output reg [WORD_WD-1:0] rd_data3;
+    
+    reg [WORD_WD-1:0] InReg[0:FILE_DEPTH-1];
+    integer x;
+    
+    initial begin: Init_Reg
+        for(x = 0; x < WORD_WD; x = x + 1) begin
+            InReg[x] <= 0;
+         end   
+    end      
+    
+    always @ (posedge clk)
+    begin: Reg_In
+        if(RegWrite==1) begin
+            InReg[wr_addr] <= wr_data;
+        end
+    end
+    always @ (posedge clk)
+    begin: Reg_Out
+        rd_data1 <= InReg[rd_addr1];
+        rd_data2 <= InReg[rd_addr2];
+        rd_data3 <= InReg[rd_addr3];
+    end
+    
+endmodule
